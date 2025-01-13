@@ -1,0 +1,53 @@
+extends ../../layouts/default.pug 
+include ../../mixins/box-head.pug 
+
+block main 
+    .container.my-3 
+        include ../../partials/list-btn-user.pug
+        .row 
+            .col-12 
+                +box-head("Chat")
+        .row 
+            .col-12 
+                .chat(my-id=user.id)
+                    .inner-body
+                        each chat in chats
+                            div(class=(chat.user_id == user.id ? "inner-outgoing" : "inner-incoming"))
+                                if(chat.user_id != user.id)
+                                    .inner-name #{chat.infoUser.fullName} 
+                                if(chat.content)
+                                    .inner-content 
+                                        | #{chat.content}
+                                if(chat.images)
+                                    .inner-images
+                                        each image in chat.images   
+                                            img(src=image)
+                        div(class="inner-list-typing")
+                    .inner-preview-images
+                        div(
+                            class="custom-file-container"
+                            data-upload-id="upload-images"
+                        )
+                    .inner-foot
+                        form(
+                            class="inner-form"
+                            action=""
+                        )
+                            input(
+                                type="text"
+                                placeholder="Nhập nội dung..."
+                                name="content"
+                            )
+                            label(
+                                class="btn btn-light mx-2"
+                                for="file-upload-with-preview-upload-images"
+                            ) 
+                                <i class="fa-regular fa-image"></i>
+                            span(class="button-icon btn btn-light mx-2") 
+                                <i class="fa-regular fa-face-smile"></i>
+                            button 
+                                i.fa-solid.fa-paper-plane
+    div(class="tooltip" role="tooltip")
+        emoji-picker(class="light")
+block script 
+    script(type="module" src="/js/chat.js")                
